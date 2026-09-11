@@ -21,6 +21,12 @@ linkWorkspacePackages: true
 overrides:
   '@deepseek-ai/cosmokit': 'link:vendor/cosmokit'
   '@deepseek-ai/schemastery': 'link:vendor/schemastery'
+  # extract-zip 2.x pins yauzl 2.x, whose fd-slicer Readable deadlocks on
+  # Node >= 24.16: entries larger than one 64 KiB stream chunk never emit
+  # 'end' through InflateRaw (nodejs/node#63487). yauzl 3.3.1 rewrote its
+  # vendored fd-slicer, so the override keeps runtime preparation working
+  # without touching extract-zip's API usage.
+  'extract-zip>yauzl': ^3.4.0
 
 peerDependencyRules:
   allowedVersions:
